@@ -39,7 +39,7 @@ elif [ "$1" == 'status' ];
         BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
         if [ -x "$(which numfmt 2>/dev/null)" ];
           then
-            BTSYNC_MEM=$((BTSYNC_MEM * 1000));
+            BTSYNC_MEM=$((BTSYNC_MEM * 1024));
             BTSYNC_MEM=$(echo $BTSYNC_MEM | numfmt --to=iec-i --suffix=B);
           else
             BTSYNC_MEM="$BTSYNC_MEM KiB";
