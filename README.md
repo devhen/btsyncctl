@@ -111,7 +111,7 @@ If the first argument passed to btsyncctl isn't `start`, `stop`, or `status` the
 #####Get read/write access to the synced files
 
 
-To access, add, or make changes to the files synced by btsync you'll want to make btsync's home folder group-writable and sticky:
+To access, add, or make changes to the files synced by btsync you'll want to make btsync's home directory group-writable and sticky:
 
     sudo chmod g+rwxs /home/btsync
 
