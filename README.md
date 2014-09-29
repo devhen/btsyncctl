@@ -83,16 +83,17 @@ The first time you access the WebUI it will prompt you to set the WebUI username
 #####Open the listening port
 
 
-Without your listening port open to the public, the btsync network may have to provide a "relay server" to peers that aren unable to connect to your btsync server. Using relay servers can slow down transfer speeds so for best performance you should open btsync's listening port by setting `listening_port` in btsync.conf to an available port and then opening that port in your firewall.
+Without your listening port open to the public, the btsync network may have to provide a "relay server" to peers that are unable to connect to your btsync server. Using relay servers can slow down transfer speeds so for best performance you should open btsync's listening port by setting `listening_port` in btsync.conf to an available port and then opening that port in your firewall.
 
 On RHEL 7 / CentOS 7 / Fedora with firewalld:
 
     sudo firewall-cmd --add-port=12345/tcp --permanent
+    sudo firewall-cmd --add-port=12345/udp --permanent
     sudo firewall-cmd --reload
 
 On Debian / Ubuntu with ufw:
 
-    sudo ufw allow 12345/tcp
+    sudo ufw allow 12345
 
 If you are behind a router you should enable UPnP in btsync.conf by setting `use_pnp` to `true`. If UPnP is not enabled in your router you will need to manually forward the listening port to the IP of the machine running btsync.
 
