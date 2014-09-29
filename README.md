@@ -95,7 +95,7 @@ On Debian / Ubuntu with ufw:
 
     sudo ufw allow 12345
 
-If you are behind a router you should enable UPnP in btsync.conf by setting `use_pnp` to `true`. If UPnP is not enabled in your router you will need to manually forward the listening port to the IP of the machine running btsync.
+If you are behind a router you should enable UPnP in btsync.conf by setting `use_upnp` to `true`. If UPnP is not enabled on your router you will need to manually forward the listening port to the IP of the machine running btsync.
 
 
 #####Stopping btsync
