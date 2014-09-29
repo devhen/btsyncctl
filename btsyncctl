@@ -1,0 +1,56 @@
+#!/bin/bash
+# 
+# btsyncctl
+# https://github.com/devhen/btsyncctl
+# 
+# @author Devin Henderson <code@devhen.net>
+# @version 2014.09.28.1
+# 
+BTSYNC_USER="btsync";
+BTSYNC_CONFIG="~/btsync.conf";
+
+PARAMS="$1 $2";
+BTSYNC_PID=$(pidof btsync);
+BTSYNC_PATH=$(su -l $BTSYNC_USER -c 'which btsync');
+green='\e[0;32m';
+red='\e[0;31m';
+endColor='\e[0m';
+
+[ $# -eq 0 ] && { echo "Usage: $0 [start|stop|status|argument1] [argument2]"; exit 1; }
+if [ "$1" == 'stop' ];
+  then
+    echo "Stopping btsync...";
+    kill "$BTSYNC_PID";
+    exit 1;
+elif [ "$1" == 'status' ];
+  then
+    BTSYNC_VER=$(su -l $BTSYNC_USER -c "btsync --help" | head -n 1);
+    BTSYNC_ARCH=$(su -l $BTSYNC_USER -c "file -L $BTSYNC_PATH" | awk '{print $3}');
+    if [ -x "$(which netstat 2>/dev/null)" ];
+      then
+        BTSYNC_PORT=$(echo -n $(netstat -lptn | grep btsync | awk 'match($0,":"){print substr($0,RSTART+1,5)}'));
+        BTSYNC_PORT="on ports $BTSYNC_PORT";
+      else
+        BTSYNC_PORT="running";
+    fi
+    if [ "$BTSYNC_PID" ];
+      then
+        BTSYNC_SINCE=$(ps -o etime -p "$BTSYNC_PID" | sed 1d | sed 's/^[ \t]*//');
+        BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | sed 1d | sed 's/^[ \t]*//');
+        if [ -x "$(which numfmt 2>/dev/null)" ];
+          then
+            BTSYNC_MEM=$((BTSYNC_MEM * 1000));
+            BTSYNC_MEM=$(echo $BTSYNC_MEM | numfmt --to=iec-i --suffix=B);
+          else
+            BTSYNC_MEM="$BTSYNC_MEM KiB";
+        fi
+        echo -e "[ ${green}Running${endColor} ] $BTSYNC_VER $BTSYNC_ARCH $BTSYNC_PORT for $BTSYNC_SINCE using $BTSYNC_MEM memory";
+      else
+        echo -e "[ ${red}Stopped${endColor} ] $BTSYNC_VER $BTSYNC_ARCH not running";
+    fi
+    exit 1;
+elif [ "$1" == 'start' ];
+  then
+    PARAMS="--config $BTSYNC_CONFIG";
+fi
+su -l $BTSYNC_USER -c "btsync $PARAMS"
