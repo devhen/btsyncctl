@@ -28,15 +28,15 @@ elif [ "$1" == 'status' ];
     BTSYNC_ARCH=$(su -l $BTSYNC_USER -c "file -L $BTSYNC_PATH" | awk '{print $3}');
     if [ -x "$(which netstat 2>/dev/null)" ];
       then
-        BTSYNC_PORT=$(echo -n $(netstat -lptn | grep btsync | awk 'match($0,":"){print substr($0,RSTART+1,5)}'));
+        BTSYNC_PORT=$(echo -n $(netstat -lptn | grep btsync | awk 'match($4,":"){print substr($4,RSTART+1)}'));
         BTSYNC_PORT="on ports $BTSYNC_PORT";
       else
         BTSYNC_PORT="running";
     fi
     if [ "$BTSYNC_PID" ];
       then
-        BTSYNC_SINCE=$(ps -o etime -p "$BTSYNC_PID" | sed 1d | sed 's/^[ \t]*//');
-        BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | sed 1d | sed 's/^[ \t]*//');
+        BTSYNC_SINCE=$(ps -o etime -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
+        BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
         if [ -x "$(which numfmt 2>/dev/null)" ];
           then
             BTSYNC_MEM=$((BTSYNC_MEM * 1000));
