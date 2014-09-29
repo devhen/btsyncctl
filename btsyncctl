@@ -4,7 +4,7 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2014.09.29.3
+# @version 2014.09.29.4
 # 
 BTSYNC_USER="btsync";
 BTSYNC_CONFIG="~/btsync.conf";
@@ -38,7 +38,7 @@ elif [ "$1" == 'status' ];
         BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
         if [ -x "$(which numfmt 2>/dev/null)" ];
           then
-            BTSYNC_MEM=$(echo "$((BTSYNC_MEM * 1024))" | numfmt --to=iec-i --suffix=B);
+            BTSYNC_MEM=$(numfmt --to=iec-i --suffix=B "$((BTSYNC_MEM * 1024))");
           else
             BTSYNC_MEM="$BTSYNC_MEM KiB";
         fi
