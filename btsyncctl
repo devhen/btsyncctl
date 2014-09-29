@@ -4,7 +4,7 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2014.09.29.2
+# @version 2014.09.29.3
 # 
 BTSYNC_USER="btsync";
 BTSYNC_CONFIG="~/btsync.conf";
@@ -28,8 +28,7 @@ elif [ "$1" == 'status' ];
     BTSYNC_ARCH=$(su -l $BTSYNC_USER -c "file -L $BTSYNC_PATH" | awk '{print $3}');
     if [ -x "$(which netstat 2>/dev/null)" ];
       then
-        BTSYNC_PORT=$(echo -n $(netstat -lptn | grep btsync | awk 'match($4,":"){print substr($4,RSTART+1)}'));
-        BTSYNC_PORT="on ports $BTSYNC_PORT";
+        BTSYNC_PORT="on ports$(netstat -lptn | grep btsync | awk 'match($4,":"){printf " "substr($4,RSTART+1)}')";
       else
         BTSYNC_PORT="running";
     fi
@@ -39,8 +38,7 @@ elif [ "$1" == 'status' ];
         BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
         if [ -x "$(which numfmt 2>/dev/null)" ];
           then
-            BTSYNC_MEM=$((BTSYNC_MEM * 1024));
-            BTSYNC_MEM=$(echo $BTSYNC_MEM | numfmt --to=iec-i --suffix=B);
+            BTSYNC_MEM=$(echo "$((BTSYNC_MEM * 1024))" | numfmt --to=iec-i --suffix=B);
           else
             BTSYNC_MEM="$BTSYNC_MEM KiB";
         fi
