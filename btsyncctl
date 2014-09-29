@@ -4,7 +4,7 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2014.09.29.1
+# @version 2014.09.29.2
 # 
 BTSYNC_USER="btsync";
 BTSYNC_CONFIG="~/btsync.conf";
