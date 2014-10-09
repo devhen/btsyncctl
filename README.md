@@ -53,7 +53,7 @@ Customize your config file as you see fit. Most settings can be left on their de
 
     sudo btsyncctl status
 
-This shows whether btsync is running and if so, the version number, architecture (32-bit or 64-bit), listening ports (if you have `netstat`installed), time since it was started, and how much memory its using.
+This shows whether btsync is running and if so, the version number, architecture (32-bit or 64-bit), listening ports (if you have `netstat` installed), time since it was started, and how much memory its using.
 
 
 #####Secure the WebUI port
