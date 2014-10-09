@@ -5,7 +5,7 @@ btsyncctl
 
 btsyncctl is a simple bash script meant to automate the process of starting, stopping, and checking the status of the BitTorrent Sync application (`btsync`) running on a Linux desktop or server. `btsync` runs as a non-privileged user and any user with adequate sudo privileges can use `btsyncctl` to pass it basic controls like `start`, `stop`, and `status`.
 
-###Installation Instructions for btsync and btsyncctl
+###Installing btsync and btsyncctl
 
 
 #####Add btsyncctl to your system
@@ -39,8 +39,9 @@ Put the btsync binary somewhere it can be executed by your btsync user, such as 
 
 #####Create a btsync config file
 
-    sudo btsyncctl --dump-sample-config > /home/btsync/btsync.conf
-    sudo chown btsync:btsync /home/btsync/btsync.conf
+    sudo su -l btsync
+    btsyncctl --dump-sample-config > /home/btsync/btsync.conf
+
 Customize your config file as you see fit. Most settings can be left on their defaults but I recommend setting `device_name` (to your hostname, for example), and setting `force_https` to `true`.
 
 #####Start btsync
