@@ -116,7 +116,7 @@ To access, add, or make changes to the files synced by btsync you'll want to mak
 
     sudo chmod g+rwxs /home/btsync
 
-And add yourself to the btsync user's group:
+And then add yourself to the btsync user's group. You'll need to logout and back in, or start a new shell, for this to take effect:
 
     sudo usermod -a -G btsync myusername
 
