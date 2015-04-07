@@ -24,7 +24,7 @@ if [ "$1" == 'stop' ];
     exit 1;
 elif [ "$1" == 'status' ];
   then
-    BTSYNC_VER=$(su -l $BTSYNC_USER -c "btsync --help" | awk 'NR==1{print $0}');
+    BTSYNC_VER=$(su -l $BTSYNC_USER -c "btsync --help" | awk 'NR==2{print $0}');
     BTSYNC_ARCH=$(su -l $BTSYNC_USER -c "file -L $BTSYNC_PATH" | awk '{print $3}');
     if [ "$BTSYNC_PID" ];
       then
