@@ -58,4 +58,4 @@ elif [ "$1" == 'start' ];
   then
     PARAMS="--config $BTSYNC_CONFIG";
 fi
-su -l $BTSYNC_USER -c "btsync $PARAMS"
+su -l $BTSYNC_USER -c "$BTSYNC_PATH $PARAMS"
