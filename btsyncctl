@@ -8,10 +8,17 @@
 # 
 BTSYNC_USER="btsync";
 BTSYNC_CONFIG="~/btsync.conf";
+BTSYNC_PATH=""
+# Setting BTSYNC_PATH is optional.
+# If you get an error saying 'which: no btsync in ([PATH])',
+# try specifying the path to btsync here
 
 PARAMS="$1 $2";
 BTSYNC_PID=$(pidof btsync);
-BTSYNC_PATH=$(su -l $BTSYNC_USER -c 'which btsync');
+if [ ! "${BTSYNC_PATH}" ];
+then
+  BTSYNC_PATH=$(su -l $BTSYNC_USER -c 'which btsync');
+fi
 green='\e[0;32m';
 red='\e[0;31m';
 endColor='\e[0m';
