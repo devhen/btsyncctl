@@ -4,20 +4,21 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2015.04.07.1
+# @version 2017.06.17.1
 # 
-BTSYNC_USER="btsync";
+BTSYNC_USER="rslsync";
 BTSYNC_CONFIG="~/btsync.conf";
-BTSYNC_PATH=""
+BTSYNC_CMD="rslsync"
+BTSYNC_PATH="/usr/bin/${BTSYNC_CMD}"
 # Setting BTSYNC_PATH is optional.
 # If you get an error saying 'which: no btsync in ([PATH])',
 # try specifying the path to btsync here
 
-PARAMS="$1 $2";
-BTSYNC_PID=$(pidof btsync);
+PARAMS="${1} ${2}";
+BTSYNC_PID=$(pidof "${BTSYNC_CMD}");
 if [ ! "${BTSYNC_PATH}" ];
 then
-  BTSYNC_PATH=$(su -l $BTSYNC_USER -c 'which btsync');
+  BTSYNC_PATH=$(su -l "${BTSYNC_USER}" -c "which ${BTSYNC_CMD}");
 fi
 green='\e[0;32m';
 red='\e[0;31m';
@@ -26,20 +27,20 @@ endColor='\e[0m';
 [ $# -eq 0 ] && { echo "Usage: $0 [start|stop|status|argument1] [argument2]"; exit 1; }
 if [ "$1" == 'stop' ];
   then
-    echo "Stopping btsync...";
-    kill "$BTSYNC_PID";
+    echo "Stopping ${BTSYNC_CMD}...";
+    kill "${BTSYNC_PID}";
     exit 1;
 elif [ "$1" == 'status' ];
   then
-    BTSYNC_VER=$(su -l $BTSYNC_USER -c "$BTSYNC_PATH --help" | awk 'NR==2{print $0}');
-    BTSYNC_ARCH=$(su -l $BTSYNC_USER -c "file -L $BTSYNC_PATH" | awk '{print $3}');
+    BTSYNC_VER=$(su -l ${BTSYNC_USER} -c "${BTSYNC_PATH} --help" | awk 'NR==2{print $0}');
+    BTSYNC_ARCH=$(su -l ${BTSYNC_USER} -c "file -L ${BTSYNC_PATH}" | awk '{print $3}');
     if [ "$BTSYNC_PID" ];
       then
-        BTSYNC_SINCE=$(ps -o etime -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
-        BTSYNC_MEM=$(ps -o size -p "$BTSYNC_PID" | awk 'NR==2{print $1}');
+        BTSYNC_SINCE=$(ps -o etime -p "${BTSYNC_PID}" | awk 'NR==2{print $1}');
+        BTSYNC_MEM=$(ps -o size -p "${BTSYNC_PID}" | awk 'NR==2{print $1}');
         if [ -x "$(which netstat 2>/dev/null)" ];
           then
-            BTSYNC_PORT="on ports$(netstat -lptn | grep btsync | awk 'match($4,":"){printf " "substr($4,RSTART+1)}')";
+            BTSYNC_PORT="on ports$(netstat -lptn | grep ${BTSYNC_CMD} | awk 'match($4,":"){printf " "substr($4,RSTART+1)}')";
           else
             BTSYNC_PORT="running";
         fi
@@ -47,15 +48,15 @@ elif [ "$1" == 'status' ];
           then
             BTSYNC_MEM=$(numfmt --to=iec-i --suffix=B "$((BTSYNC_MEM * 1024))");
           else
-            BTSYNC_MEM="$BTSYNC_MEM KiB";
+            BTSYNC_MEM="${BTSYNC_MEM} KiB";
         fi
-        echo -e "[ ${green}Running${endColor} ] $BTSYNC_VER $BTSYNC_ARCH $BTSYNC_PORT for $BTSYNC_SINCE using $BTSYNC_MEM memory";
+        echo -e "[ ${green}Running${endColor} ] ${BTSYNC_VER} ${BTSYNC_ARCH} ${BTSYNC_PORT} for ${BTSYNC_SINCE} using ${BTSYNC_MEM} memory";
       else
-        echo -e "[ ${red}Stopped${endColor} ] $BTSYNC_VER $BTSYNC_ARCH not running";
+        echo -e "[ ${red}Stopped${endColor} ] ${BTSYNC_VER} ${BTSYNC_ARCH} not running";
     fi
     exit 1;
 elif [ "$1" == 'start' ];
   then
-    PARAMS="--config $BTSYNC_CONFIG";
+    PARAMS="--config ${BTSYNC_CONFIG}";
 fi
-su -l $BTSYNC_USER -c "$BTSYNC_PATH $PARAMS"
+su -l ${BTSYNC_USER} -c "${BTSYNC_PATH} ${PARAMS}"
