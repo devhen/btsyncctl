@@ -10,14 +10,14 @@ btsyncctl
 ### Installing rslsync and btsyncctl
 
 
-##### Add btsyncctl to your system
+#### Add btsyncctl to your system
 
     git clone https://github.com/devhen/btsyncctl.git
     sudo cp btsyncctl/btsyncctl /usr/bin/
     sudo chmod +x /usr/bin/btsyncctl
 
 
-##### Create the user that btsync will run as
+#### Create the user that btsync will run as
 
 On RHEL / CentOS / Fedora:
 
@@ -28,7 +28,7 @@ On Debian / Ubuntu:
     sudo adduser rslsync --disabled-password
 
 
-##### Download rslsync
+#### Download rslsync
 
 Get rslsync for your system architecture (i386 or x64) from here: <https://www.resilio.com/platforms/desktop/>
 
@@ -41,26 +41,26 @@ Put the btsync binary somewhere it can be executed by your btsync user, such as 
     cp /path/to/rslsync ~/bin/
 
 
-##### Create a rslsync config file
+#### Create a rslsync config file
 
     sudo su -l rslsync
     btsyncctl --dump-sample-config > /home/rslsync/rslsync.conf
 
 Customize your config file as you see fit. Most settings can be left on their defaults but I recommend setting `device_name` (to your hostname, for example), and setting `force_https` to `true`.
 
-##### Start rslsync
+#### Start rslsync
 
     sudo btsyncctl start
 
 
-##### Check rslsync status
+#### Check rslsync status
 
     sudo btsyncctl status
 
 This shows whether rslsync is running and if so, the version number, architecture (32-bit or 64-bit), listening ports (if you have `netstat` installed), time since it was started, and how much memory its using.
 
 
-##### Secure the WebUI port
+#### Secure the WebUI port
 
 
 The default WebUI port is 8888. If you are running rslsync on your local computer you should be able to access the WebUI right away by going to:
@@ -85,7 +85,7 @@ You should now be able to access the WebUI by going to:
 The first time you access the WebUI it will prompt you to set the WebUI username and password.
 
 
-##### Open the listening port
+#### Open the listening port
 
 
 Without your listening port open to the public, the rslsync network may have to provide a "relay server" to peers that are unable to connect to your rslsync server. Using relay servers can slow down transfer speeds so for best performance you should open rslsync's listening port by setting `listening_port` in rslsync.conf to an available port and then opening that port in your firewall.
@@ -103,17 +103,17 @@ On Debian / Ubuntu with ufw:
 If you are behind a router you should enable UPnP in rslsync.conf by setting `use_upnp` to `true`. If UPnP is not enabled on your router you will need to manually forward the listening port to the IP of the machine running rslsync.
 
 
-##### Stopping rslsync
+#### Stopping rslsync
 
     sudo btsyncctl stop
 
 
-##### Other commands
+#### Other commands
 
 If the first argument passed to btsyncctl isn't `start`, `stop`, or `status` the arguments will be passed along to the rslsync binary. Therefore, you can pass arguments that rslsync supports, for example `sudo btsyncctl --help` and `sudo btsyncctl --dump-sample-config`.
 
 
-##### Get read/write access to the synced files
+#### Get read/write access to the synced files
 
 
 To access, add, or make changes to the files synced by rslsync you'll want to make rslsync's home directory group-writable and sticky:
