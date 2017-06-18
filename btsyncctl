@@ -4,15 +4,12 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2017.06.17.1
+# @version 2017.06.17.2
 # 
 BTSYNC_USER="rslsync";
 BTSYNC_CONFIG="~/btsync.conf";
 BTSYNC_CMD="rslsync"
 BTSYNC_PATH="/usr/bin/${BTSYNC_CMD}"
-# Setting BTSYNC_PATH is optional.
-# If you get an error saying 'which: no btsync in ([PATH])',
-# try specifying the path to btsync here
 
 PARAMS="${1} ${2}";
 BTSYNC_PID=$(pidof "${BTSYNC_CMD}");
