@@ -3,9 +3,11 @@ btsyncctl
 
 [BitTorrent Sync](http://www.bittorrent.com/sync) is a powerful cross-platform file sharing application. Think of it as a decentralized version of Dropbox with no charges (it's free), no limits, and no middle-man.
 
-btsyncctl is a simple bash script meant to automate the process of starting, stopping, and checking the status of the BitTorrent Sync application (`btsync`) running on a Linux desktop or server. `btsync` runs as a non-privileged user and any user with adequate sudo privileges can use `btsyncctl` to pass it basic controls like `start`, `stop`, and `status`.
+**UPDATE:** BitTorrent Sync is now [Resilio Sync](https://www.resilio.com/platforms/desktop/). The executable changed from `btsync` to `rslsync`. `btsyncctl` works with both.
 
-###Installing btsync and btsyncctl
+`btsyncctl` is a simple bash script meant to automate the process of starting, stopping, and checking the status of the Resilio Sync application (`rslsync`) running on a Linux desktop or server. `rslsync` runs as a non-privileged user and any user with adequate sudo privileges can use `btsyncctl` to pass it basic controls like `start`, `stop`, and `status`.
+
+###Installing rslsync and btsyncctl
 
 
 #####Add btsyncctl to your system
@@ -19,51 +21,53 @@ btsyncctl is a simple bash script meant to automate the process of starting, sto
 
 On RHEL / CentOS / Fedora:
 
-    sudo adduser btsync
+    sudo adduser rslsync
 
 On Debian / Ubuntu:
 
-    sudo adduser btsync --disabled-password
+    sudo adduser rslsync --disabled-password
 
 
-#####Download btsync
+#####Download rslsync
 
-Get btsync for your system architecture (i386 or x64) from here: <http://www.bittorrent.com/sync/download>
+Get rslsync for your system architecture (i386 or x64) from here: <https://www.resilio.com/platforms/desktop/>
+
+Repositories for Debian, Ubuntu, Redhat, CentOS, and Fedora can be found here: <https://help.resilio.com/hc/en-us/articles/206178924>
 
 Put the btsync binary somewhere it can be executed by your btsync user, such as `~/bin`:
 
-    sudo su -l btsync
+    sudo su -l rslsync
     mkdir ~/bin
-    cp /path/to/btsync ~/bin/
+    cp /path/to/rslsync ~/bin/
 
 
-#####Create a btsync config file
+#####Create a rslsync config file
 
-    sudo su -l btsync
-    btsyncctl --dump-sample-config > /home/btsync/btsync.conf
+    sudo su -l rslsync
+    btsyncctl --dump-sample-config > /home/rslsync/rslsync.conf
 
 Customize your config file as you see fit. Most settings can be left on their defaults but I recommend setting `device_name` (to your hostname, for example), and setting `force_https` to `true`.
 
-#####Start btsync
+#####Start rslsync
 
     sudo btsyncctl start
 
 
-#####Check btsync status
+#####Check rslsync status
 
     sudo btsyncctl status
 
-This shows whether btsync is running and if so, the version number, architecture (32-bit or 64-bit), listening ports (if you have `netstat` installed), time since it was started, and how much memory its using.
+This shows whether rslsync is running and if so, the version number, architecture (32-bit or 64-bit), listening ports (if you have `netstat` installed), time since it was started, and how much memory its using.
 
 
 #####Secure the WebUI port
 
 
-The default WebUI port is 8888. If you are running btsync on your local computer you should be able to access the WebUI right away by going to:
+The default WebUI port is 8888. If you are running rslsync on your local computer you should be able to access the WebUI right away by going to:
 
     https://localhost:8888
 
-If you are running btsync on a remote server you'll probably want to open the WebUI port for your IP address only.
+If you are running rslsync on a remote server you'll probably want to open the WebUI port for your IP address only.
 
 On RHEL 7 / CentOS 7 / Fedora with firewalld:
 
@@ -84,7 +88,7 @@ The first time you access the WebUI it will prompt you to set the WebUI username
 #####Open the listening port
 
 
-Without your listening port open to the public, the btsync network may have to provide a "relay server" to peers that are unable to connect to your btsync server. Using relay servers can slow down transfer speeds so for best performance you should open btsync's listening port by setting `listening_port` in btsync.conf to an available port and then opening that port in your firewall.
+Without your listening port open to the public, the rslsync network may have to provide a "relay server" to peers that are unable to connect to your rslsync server. Using relay servers can slow down transfer speeds so for best performance you should open rslsync's listening port by setting `listening_port` in rslsync.conf to an available port and then opening that port in your firewall.
 
 On RHEL 7 / CentOS 7 / Fedora with firewalld:
 
@@ -96,30 +100,30 @@ On Debian / Ubuntu with ufw:
 
     sudo ufw allow 12345
 
-If you are behind a router you should enable UPnP in btsync.conf by setting `use_upnp` to `true`. If UPnP is not enabled on your router you will need to manually forward the listening port to the IP of the machine running btsync.
+If you are behind a router you should enable UPnP in rslsync.conf by setting `use_upnp` to `true`. If UPnP is not enabled on your router you will need to manually forward the listening port to the IP of the machine running rslsync.
 
 
-#####Stopping btsync
+#####Stopping rslsync
 
     sudo btsyncctl stop
 
 
 #####Other commands
 
-If the first argument passed to btsyncctl isn't `start`, `stop`, or `status` the arguments will be passed along to the btsync binary. Therefore, you can pass arguments that btsync supports, for example `sudo btsyncctl --help` and `sudo btsyncctl --dump-sample-config`.
+If the first argument passed to btsyncctl isn't `start`, `stop`, or `status` the arguments will be passed along to the rslsync binary. Therefore, you can pass arguments that rslsync supports, for example `sudo btsyncctl --help` and `sudo btsyncctl --dump-sample-config`.
 
 
 #####Get read/write access to the synced files
 
 
-To access, add, or make changes to the files synced by btsync you'll want to make btsync's home directory group-writable and sticky:
+To access, add, or make changes to the files synced by rslsync you'll want to make rslsync's home directory group-writable and sticky:
 
-    sudo chmod g+rwxs /home/btsync
+    sudo chmod g+rwxs /home/rslsync
 
-And then add yourself to the btsync user's group. You'll need to logout and back in, or start a new shell, for this to take effect:
+And then add yourself to the rslsync user's group. You'll need to logout and back in, or start a new shell, for this to take effect:
 
-    sudo usermod -a -G btsync myusername
+    sudo usermod -a -G rslsync myusername
 
-On some systems you may need to set your's and the btsync user's umasks to `0002`. You can do this by adding the following line to each `~/.bashrc`:
+To change the default permissions rslsync uses for new files, set the umask by adding this line to the rslsync user's `~/.bashrc`:
 
-    umask 0002
+    umask 0007

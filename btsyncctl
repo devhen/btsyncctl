@@ -4,7 +4,7 @@
 # https://github.com/devhen/btsyncctl
 # 
 # @author Devin Henderson <code@devhen.net>
-# @version 2017.06.17.2
+# @version 2017.06.17.3
 # 
 BTSYNC_USER="rslsync";
 BTSYNC_CONFIG="~/btsync.conf";
@@ -26,7 +26,7 @@ if [ "$1" == 'stop' ];
   then
     echo "Stopping ${BTSYNC_CMD}...";
     kill "${BTSYNC_PID}";
-    exit 1;
+    exit 0;
 elif [ "$1" == 'status' ];
   then
     BTSYNC_VER=$(su -l ${BTSYNC_USER} -c "${BTSYNC_PATH} --help" | awk 'NR==2{print $0}');
@@ -51,7 +51,7 @@ elif [ "$1" == 'status' ];
       else
         echo -e "[ ${red}Stopped${endColor} ] ${BTSYNC_VER} ${BTSYNC_ARCH} not running";
     fi
-    exit 1;
+    exit 0;
 elif [ "$1" == 'start' ];
   then
     PARAMS="--config ${BTSYNC_CONFIG}";
